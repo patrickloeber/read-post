@@ -19,6 +19,7 @@ export default {
 				const event = wh.verify(payload, headers) as Record<string, any>;
 
 				// Process thin payload contents
+				console.log("Verified event:", JSON.stringify(event));
 				if (event.type === "batch.completed" || event.type === "video.generated") {
 					const uri = event.data.output_file_uri;
 					console.log(`Job finished! Results at: ${uri}`);
