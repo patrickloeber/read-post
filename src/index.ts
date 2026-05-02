@@ -10,7 +10,10 @@ export default {
 				headers[key] = value;
 			});
 
+			console.log("Headers:", JSON.stringify(headers));
+
 			try {
+				console.log("WEBHOOK_SIGNING_SECRET:", env.WEBHOOK_SIGNING_SECRET);
 				const wh = new Webhook(env.WEBHOOK_SIGNING_SECRET);
 				const event = wh.verify(payload, headers) as Record<string, any>;
 
