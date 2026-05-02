@@ -2,10 +2,8 @@ import { Webhook } from "standardwebhooks";
 
 export default {
 	async fetch(request, env): Promise<Response> {
-		const url = new URL(request.url);
-
-		// Only handle POST requests to /gemini-callback
-		if (request.method === "POST" && url.pathname === "/gemini-callback") {
+		// Handle POST requests
+		if (request.method === "POST") {
 			const payload = await request.text();
 			const headers: Record<string, string> = {};
 			request.headers.forEach((value, key) => {
@@ -27,6 +25,10 @@ export default {
 				console.error("Webhook verification failed:", e);
 				return Response.json({ error: "Signature invalid" }, { status: 400 });
 			}
+		}
+
+		if (request.method === "GET") {
+			return new Response("Worker is running!");
 		}
 
 		return new Response("Not Found", { status: 404 });
