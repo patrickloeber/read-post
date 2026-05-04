@@ -2,9 +2,12 @@ import { Webhook } from "standardwebhooks";
 
 export default {
 	async fetch(request, env): Promise<Response> {
+		console.log(`Incoming request: ${request.method} ${request.url}`);
+
 		// Handle POST requests
 		if (request.method === "POST") {
 			const payload = await request.text();
+			console.log("Payload:", payload);
 			const headers: Record<string, string> = {};
 			request.headers.forEach((value, key) => {
 				headers[key] = value;
