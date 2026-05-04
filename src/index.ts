@@ -67,7 +67,7 @@ export default {
 				}
 
 				// Actual webhook verification
-				const wh = new Webhook(env.WEBHOOK_SIGNING_SECRET);
+				const wh = new Webhook(env.WEBHOOK_SIGNING_SECRET, { format: "raw" });
 				const event = wh.verify(payload, headers) as Record<string, any>;
 
 				console.log("Verified event:", JSON.stringify(event));
