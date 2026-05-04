@@ -66,10 +66,27 @@ export default {
 					console.log(`  ${name}: ${b64} ${match}`);
 				}
 
-				// Actual webhook verification
-				const wh = new Webhook(env.WEBHOOK_SIGNING_SECRET, { format: "raw" });
-				const event = wh.verify(payload, headers) as Record<string, any>;
+				// Webhook library verification attempt
+				try {
+					const wh = new Webhook(env.WEBHOOK_SIGNING_SECRET, { format: "raw" });
+					const libEvent = wh.verify(payload, headers);
+					console.log("Library verification: ✅ SUCCESS", JSON.stringify(libEvent));
+				} catch (libErr) {
+					console.log("Library verification: ❌ FAILED", (libErr as Error).message);
+				}
 
+				// Verify signature using crypto.subtle (raw UTF-8 bytes of full secret)
+				const hmacKey = await crypto.subtle.importKey(
+					"raw", encoder.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
+				);
+				const computedSig = await crypto.subtle.sign("HMAC", hmacKey, toSignBytes);
+				const computedB64 = btoa(String.fromCharCode(...new Uint8Array(computedSig)));
+
+				if (computedB64 !== receivedSig) {
+					return Response.json({ error: "Signature invalid" }, { status: 400 });
+				}
+
+				const event = JSON.parse(payload);
 				console.log("Verified event:", JSON.stringify(event));
 				if (event.type === "batch.completed" || event.type === "video.generated") {
 					const uri = event.data.output_file_uri;
