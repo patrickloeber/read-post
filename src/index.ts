@@ -18,7 +18,7 @@ export default {
 			try {
 				console.log("WEBHOOK_SIGNING_SECRET:", env.WEBHOOK_SIGNING_SECRET);
 				// const wh = new Webhook(env.WEBHOOK_SIGNING_SECRET);
-				const wh = new Webhook(env.WEBHOOK_SIGNING_SECRET);
+				const wh = new Webhook(env.WEBHOOK_SIGNING_SECRET, { format: "raw" });
 				const event = wh.verify(payload, headers) as Record<string, any>;
 
 				// Process thin payload contents
