@@ -14,7 +14,7 @@ export default {
 			try {
 				const wh = new Webhook(env.WEBHOOK_SIGNING_SECRET);
 				const event = wh.verify(payload, headers) as Record<string, any>;
-				console.log("Event data:", JSON.stringify(event.data));
+				console.log(`Event type: ${event.type}, data: ${JSON.stringify(event.data)}`);
 
 				if (event.type === "batch.completed" || event.type === "video.generated") {
 					const uri = event.data.output_file_uri;
