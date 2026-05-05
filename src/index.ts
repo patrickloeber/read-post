@@ -16,7 +16,7 @@ export default {
 				const event = wh.verify(payload, headers) as Record<string, any>;
 				console.log(`Event type: ${event.type}, data: ${JSON.stringify(event.data)}`);
 
-				if (event.type === "batch.completed") {
+				if (event.type === "batch.succeeded") {
 					console.log(`Batch completed! ID: ${event.data.id}`);
 				} else if (event.type === "video.generated") {
 					console.log(`Video generated! URI: ${event.data.video_uri}`);
