@@ -4,16 +4,17 @@ A Cloudflare Worker that receives and verifies webhook callbacks from the Gemini
 
 ## What it does
 
-- Listens for `POST` requests on `/gemini-callback`
-- Verifies the webhook signature using your signing secret
+- Listens for incoming `POST` requests
+- Verifies the webhook signature using your signing secret and the [standardwebhooks](https://www.npmjs.com/package/standardwebhooks) library
 - Handles the following event types:
-  - `batch.completed` — a batch job has finished processing
-  - `video.generated` — a video has been generated
-- Logs the output file URI from the event payload
+  - `batch.succeeded` — a batch job has finished processing; logs the batch ID and output file URI (if available)
+  - `video.generated` — a video has been generated; logs the output file URI
 
 ## Reference
 
-Based on the [Read POST](https://developers.cloudflare.com/workers/examples/read-post/) Cloudflare Workers example.
+- [Gemini API Webhooks documentation](https://ai.google.dev/gemini-api/docs/webhooks)
+- Accompanying [Webhooks end-to-end cookbook](https://github.com/google-gemini/cookbook/blob/main/quickstarts/Webhooks.ipynb)
+- Based on the [Read POST](https://developers.cloudflare.com/workers/examples/read-post/) Cloudflare Workers example.
 
 ## Prerequisites
 
