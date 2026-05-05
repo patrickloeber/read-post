@@ -18,8 +18,12 @@ export default {
 
 				if (event.type === "batch.succeeded") {
 					console.log(`Batch completed! ID: ${event.data.id}`);
+					if (event.data.output_file_uri) {
+						// For batch jobs with input file
+						console.log(`Batch file: ${event.data.output_file_uri}`);
+					}
 				} else if (event.type === "video.generated") {
-					console.log(`Video generated! URI: ${event.data.video_uri}`);
+					console.log(`Video generated! URI: ${event.data.output_file_uri}`);
 				}
 
 				return Response.json({ status: "received" }, { status: 200 });
